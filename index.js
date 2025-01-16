@@ -1,31 +1,57 @@
 const slides = document.querySelectorAll(".sliders img");
+const menuBtn = document.getElementById('menuBtn');
+const navLinks = document.querySelector(".showData"); // Changed to querySelector
 
-let slideIndex =0;
+let slideIndex = 0;
 let intervalId = null;
 
-initiaLizeSlider();
+// Initialize the slider
+initializeSlider();
 
-function initiaLizeSlider(){
- slides[slideIndex].classList.add("displaySlide");
+function initializeSlider() {
+    if (slides.length > 0) { // Check if there are slides
+        slides.forEach(slide => {
+            slide.style.display = "none"; // Hide all slides
+        });
+        slides[slideIndex].style.display = "block"; // Show first slide
+    }
 }
 
-function showSlide(index){
+function showSlide(index) {
+    if (index >= slides.length) {
+        slideIndex = 0;
+    } else if (index < 0) {
+        slideIndex = slides.length - 1;
+    } else {
+        slideIndex = index;
+    }
 
+    slides.forEach(slide => {
+        slide.style.display = "none";
+    });
+    slides[slideIndex].style.display = "block";
 }
 
-function prevSlide(){
-
+function prevSlide() {
+    showSlide(slideIndex - 1);
 }
 
-function nextSlide(){
-  
+function nextSlide() {
+    showSlide(slideIndex + 1);
 }
 
+// Menu toggle functionality
+menuBtn.addEventListener('click', () => {
+    navLinks.classList.toggle('active');
+    console.log('Menu clicked'); // For debugging
+});
 
-let icon = document.querySelector(".menu-icon");
-let ul = document.querySelector(".ul");
+// Optional: Auto-slide functionality
+function startSlideShow() {
+    intervalId = setInterval(() => {
+        nextSlide();
+    }, 3000); // Change slide every 3 seconds
+}
 
-icon.addEventListener('click',()=>{
-  ul.classList.toggle("showData");
-  console.log(ul);
-})
+// Uncomment the line below if you want the slideshow to start automatically
+startSlideShow();
